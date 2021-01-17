@@ -34,8 +34,11 @@
               >
                 -
               </div>
+              
               <div class="footer__btn__number">
-                {{ cartList?.[shopId]?.[item._id]?.count || 0 }}
+                  {{ cartList?.[shopId]?.[item._id]?.count || 0 }}
+                <!-- {{ cartList?.[shopId]?.productList?.[item._id]?.count || 0 }} -->
+                     <!-- {{ item.count || 0 }} -->
               </div>
               <div
                 class="footer__btn__add"
@@ -55,8 +58,8 @@
 <script>
 import { reactive, ref, toRefs, watchEffect } from "vue";
 import { useRoute } from "vue-router";
-import { useStore } from "vuex";
 import { get } from "../../utils/request";
+import {useCommonCartEffect} from './useCartEffect';
 
 // 获取数据相关逻辑
 const useContentEffect = (navActive, shopId) => {
@@ -96,24 +99,6 @@ const useTabEffect = () => {
   return { navActive, checkNav };
 };
 
-// 购物车的逻辑
-
-const useCartEffect = () => {
-  const store = useStore();
-  const { cartList } = toRefs(store.state);
-  // 添加
-  const changeCartNum = (shopId, productId, item,num) => {
-    // 存store
-    store.commit("changeCartNum", {
-      shopId,
-      productId,
-      item,
-      num
-    });
-  };
-  return { cartList, changeCartNum };
-};
-
 export default {
   name: "Content",
   setup() {
@@ -133,7 +118,7 @@ export default {
     const { checkNav, navActive } = useTabEffect();
     // 获取数据
     const { contList } = useContentEffect(navActive, shopId);
-    const { cartList, changeCartNum } = useCartEffect();
+    const {  changeCartNum,cartList } = useCommonCartEffect();
     // 解构nav
     const { nav } = toRefs(data);
 

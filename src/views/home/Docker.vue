@@ -1,40 +1,60 @@
 <template>
   <div class="docker">
-    <div :class="{'docker__item':true,'docker__item--active' :item.flag==true}" 
-    v-for="item in dockList" :key="item.icon">
+    <div
+      :class="{ docker__item: true, 'docker__item--active': item.flag == true }"
+      v-for="item in dockList"
+      :key="item.icon"
+      @click="goPage(item.name)"
+    >
       <div class="iconfont" v-html="item.icon"></div>
-      <div class="docker__title">{{item.text}}</div>
+      <div class="docker__title">{{ item.text }}</div>
     </div>
   </div>
 </template>
 <script>
+import {useRouter} from 'vue-router'
 export default {
   name: "Docker",
   setup() {
+    const router = useRouter();
     const dockList = [
       {
         icon: "&#xe630;",
         text: "首页",
-        flag:true
+        flag: true,
+        link: "",
+        name: "Home",
       },
       {
         icon: "&#xe604;",
         text: "购物车",
-        flag:false
+        flag: false,
+        name: "Cart",
       },
       {
         icon: "&#xe63b;",
         text: "订单",
-               flag:false
+        flag: false,
+        name: "Home",
       },
       {
         icon: "&#xe638;",
         text: "我的",
-               flag:false
+        flag: false,
+         name: "Home",
       },
     ];
+
+    const goPage = (data) => {
+      console.log(data);
+      router.push({
+        name:data
+      })
+    };
+
     return {
       dockList,
+      goPage
     };
   },
 };
