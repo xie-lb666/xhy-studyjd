@@ -20,6 +20,12 @@ const routes = [{
 
   },
   {
+    path: '/Order/:id',
+    name: 'Order',
+    component: () => import(/* webpackChunkName:'home'  */'../views/order/order'),
+
+  },
+  {
     path: '/login',
     name: 'Login',
     component: Login,

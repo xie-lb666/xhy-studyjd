@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="mask" v-if="showCart&&total>0" @click="setShow"></div>
+    <div class="mask" v-if="showCart && total > 0" @click="setShow"></div>
     <div class="box">
-      <div class="products" v-if="showCart&&total>0">
+      <div class="products" v-if="showCart && total > 0">
         <div class="products__header">
           <div class="products__header__all" @click="allCart">
             <span
@@ -70,9 +70,7 @@
             总计：<span class="body__text__price">￥{{ price }}</span>
           </div>
         </div>
-        <div class="cart__btn" @click="goPage">
-          结算
-        </div>
+        <div class="cart__btn" @click="goPage()">结算</div>
       </div>
     </div>
   </div>
@@ -83,7 +81,7 @@
 <script>
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
-import { useRoute,useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useCommonCartEffect } from "./useCartEffect";
 
 const useCartEffect = () => {
@@ -100,7 +98,7 @@ const useCartEffect = () => {
     if (productList) {
       for (let i in productList) {
         const product = productList[i];
-        console.log("================",product);
+        console.log("================", product);
         count += product.count;
       }
       console.log(count);
@@ -170,7 +168,7 @@ const useCartEffect = () => {
     cleanCart,
     allCart,
     allChecked,
-    shopId
+    shopId,
   };
 };
 
@@ -184,17 +182,21 @@ const useShowEffect = () => {
   return { showCart, setShow };
 };
 
-const useRouteEffect = () =>{
-   const router = useRouter();
-   const goPage = () =>{
-     console.log("跳转路由")
-     router.push({
-       name:'Home'
-     })
-   };
-   return {goPage}
-
-}
+const useRouteEffect = () => {
+  const router = useRouter();
+  const route = useRoute();
+  const shopId = route.params.id;
+  const goPage = () => {
+    console.log("跳转路由");
+    router.push({
+      path: "/Order",
+      query: {
+        shopId: shopId,
+      },
+    });
+  };
+  return { goPage };
+};
 
 export default {
   name: "Cart",
@@ -208,12 +210,12 @@ export default {
       cleanCart,
       allCart,
       allChecked,
-      shopId
+      shopId,
     } = useCartEffect();
 
     const { showCart, setShow } = useShowEffect();
 
-    const {goPage}  = useRouteEffect();
+    const { goPage } = useRouteEffect();
 
     return {
       total,
@@ -227,7 +229,7 @@ export default {
       setShow,
       showCart,
       goPage,
-      shopId
+      shopId,
     };
   },
 };
